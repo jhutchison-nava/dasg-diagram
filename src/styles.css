@@ -1,0 +1,145 @@
+@import "tailwindcss";
+
+/* Design tokens — mirror the diagram legend. Tailwind v4 picks these up as
+   CSS variables and as utilities (e.g. bg-cat-system-of-record, ring-edge-fhir). */
+@theme {
+  --color-text: #1f2937;
+  --color-text-muted: #6b7280;
+  --color-border: #d1d5db;
+  --color-bg: #fffaf0;
+  --color-panel-bg: #ffffff;
+
+  /* Category palette */
+  --color-cat-system-of-record: #f4cccc;
+  --color-cat-system-of-record-border: #cc6666;
+  --color-cat-mpsm: #c9d8ff;
+  --color-cat-mpsm-border: #6d7fbf;
+  --color-cat-data-warehouse: #fcdf8a;
+  --color-cat-data-warehouse-border: #c89c2c;
+  --color-cat-dasg-ecosystem: #cfe7f3;
+  --color-cat-dasg-ecosystem-border: #5fa6cc;
+  --color-cat-source-of-truth: #cfe7d0;
+  --color-cat-source-of-truth-border: #4a8b5a;
+  --color-cat-health-entity: #f4cccc;
+  --color-cat-health-entity-border: #cc6666;
+  --color-cat-component: #ffffff;
+  --color-cat-component-border: #6b7280;
+
+  /* Edge palette */
+  --color-edge-default: #1f2937;
+  --color-edge-claims-submission: #2f80ed;
+  --color-edge-system-of-record: #d63384;
+  --color-edge-warehouse-flow: #e8a83a;
+  --color-edge-warehouse-feed: #e8a83a;
+  --color-edge-source-of-truth: #4a8b5a;
+  --color-edge-fhir: #d6336c;
+}
+
+@layer base {
+  html,
+  body,
+  #root {
+    height: 100%;
+    margin: 0;
+  }
+
+  body {
+    font-family:
+      -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    color: var(--color-text);
+    background: var(--color-bg);
+    font-size: 14px;
+  }
+}
+
+/* React Flow's structural classes need raw CSS — Tailwind utilities can't
+   touch their internal DOM. Keep these minimal. */
+@layer components {
+  /* Custom React Flow node — category-driven color via data-attr. */
+  .cat-node {
+    @apply rounded-lg border-[1.5px] px-3 py-2 text-center bg-white text-[0.8rem] leading-snug min-w-[140px];
+    border-color: var(--color-border);
+  }
+  .cat-node .label {
+    @apply font-semibold;
+  }
+  .cat-node .acronym {
+    @apply block mt-0.5 text-[0.7rem] opacity-70;
+    font-family: ui-monospace, SFMono-Regular, monospace;
+  }
+  .cat-node[data-category="system-of-record"] {
+    background: var(--color-cat-system-of-record);
+    border-color: var(--color-cat-system-of-record-border);
+  }
+  .cat-node[data-category="mpsm"] {
+    background: var(--color-cat-mpsm);
+    border-color: var(--color-cat-mpsm-border);
+  }
+  .cat-node[data-category="data-warehouse"] {
+    background: var(--color-cat-data-warehouse);
+    border-color: var(--color-cat-data-warehouse-border);
+  }
+  .cat-node[data-category="dasg-ecosystem"] {
+    background: var(--color-cat-dasg-ecosystem);
+    border-color: var(--color-cat-dasg-ecosystem-border);
+  }
+  .cat-node[data-category="source-of-truth"] {
+    background: var(--color-cat-source-of-truth);
+    border-color: var(--color-cat-source-of-truth-border);
+  }
+  .cat-node[data-category="health-entity"] {
+    background: var(--color-cat-health-entity);
+    border-color: var(--color-cat-health-entity-border);
+  }
+  .cat-node[data-category="component"] {
+    background: var(--color-cat-component);
+    border-color: var(--color-cat-component-border);
+  }
+  .cat-node.selected {
+    outline: 3px solid #2f80ed;
+    outline-offset: 2px;
+  }
+  .cat-node.dimmed {
+    opacity: 0.25;
+  }
+  .cat-node.is-group {
+    @apply w-full h-full text-left border-dashed;
+    background: color-mix(
+      in srgb,
+      var(--color-cat-dasg-ecosystem) 35%,
+      transparent
+    );
+  }
+  .cat-node.is-group .label {
+    @apply text-[0.85rem] font-semibold;
+  }
+  .cat-node.is-group .acronym {
+    @apply inline-block ml-1.5;
+  }
+
+  /* Edge-kind chip — used in the side panel and any future legend. */
+  .edge-chip {
+    @apply inline-block w-2.5 h-2.5 rounded-full border border-black/15;
+  }
+  .edge-chip[data-edge-kind="default"] {
+    background: var(--color-edge-default);
+  }
+  .edge-chip[data-edge-kind="claims-submission"] {
+    background: var(--color-edge-claims-submission);
+  }
+  .edge-chip[data-edge-kind="system-of-record"] {
+    background: var(--color-edge-system-of-record);
+  }
+  .edge-chip[data-edge-kind="warehouse-flow"] {
+    background: var(--color-edge-warehouse-flow);
+  }
+  .edge-chip[data-edge-kind="warehouse-feed"] {
+    background: var(--color-edge-warehouse-feed);
+  }
+  .edge-chip[data-edge-kind="source-of-truth"] {
+    background: var(--color-edge-source-of-truth);
+  }
+  .edge-chip[data-edge-kind="fhir"] {
+    background: var(--color-edge-fhir);
+  }
+}
