@@ -1,8 +1,8 @@
 import { defineConfig, type Plugin } from "vite";
 import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
-import { TanStackRouterVite } from "@tanstack/router-plugin/vite";
-import path from "node:path";
+import { tanstackRouter } from "@tanstack/router-plugin/vite";
+import { fileURLToPath, URL } from "node:url";
 
 function velitePlugin(): Plugin {
   let started = false;
@@ -21,16 +21,21 @@ function velitePlugin(): Plugin {
 }
 
 export default defineConfig({
+  // GitHub Pages serves at https://<owner>.github.io/dasg-diagram/.
+  base: "/dasg-diagram/",
   plugins: [
     velitePlugin(),
-    TanStackRouterVite({ target: "react", autoCodeSplitting: true }),
-    react(),
     tailwindcss(),
+    tanstackRouter({ target: "react", autoCodeSplitting: true }),
+    react(),
   ],
   resolve: {
     alias: {
-      "@": path.resolve(__dirname, "src"),
-      "#site/content": path.resolve(__dirname, ".velite"),
+      "@": fileURLToPath(new URL("./src", import.meta.url)),
+      "#site/content": fileURLToPath(new URL("./.velite", import.meta.url)),
     },
+  },
+  build: {
+    outDir: "dist",
   },
 });
